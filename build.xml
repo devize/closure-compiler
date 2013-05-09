@@ -16,6 +16,7 @@
     <target name="test" depends="update">
         <echo msg="Running PHPunit..." />
         <exec command="php vendor/bin/phpunit "  passthru="true" />
+        <exec command="rm compiled.js" />
         <echo msg="Test done." />
     </target>
 
