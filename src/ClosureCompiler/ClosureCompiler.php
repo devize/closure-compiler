@@ -1,7 +1,4 @@
 <?php
-
-namespace Devize\ClosureCompiler;
-
 /**
  * PHP-wrapper to create an interface between Google's Closure Compiler and your PHP scripts
  *
@@ -22,13 +19,27 @@ namespace Devize\ClosureCompiler;
  *      $compiler->setTargetFile('minified.js');
  *      $compiler->compile();
  *
- * @author Peter Breuls <breuls@devize.nl>
+ * @package Devize\ClosureCompiler
+ * @author  Peter Breuls <breuls@devize.nl>
+ * @license MIT
+ * @link    https://github.com/devize/closure-compiler
+ */
+
+namespace Devize\ClosureCompiler;
+
+/**
+ * Main interface for Closure Compiler
+ *
+ * @package Devize\ClosureCompiler
+ * @author  Peter Breuls <breuls@devize.nl>
+ * @license MIT
+ * @link    https://github.com/devize/closure-compiler
  */
 class ClosureCompiler
 {
 
     protected $compilerJar = 'compiler-latest/compiler.jar';
-    
+
     protected $config = array(
         'sourceBaseDir' => '',
         'targetBaseDir' => '',
@@ -36,21 +47,42 @@ class ClosureCompiler
         'targetFileName' => 'compiled.js',
     );
 
+    /**
+     * Constructor; sets the path to the compiler binary
+     */
     public function __construct()
     {
         $this->compilerJar = realpath(__DIR__ . '/../../' . $this->compilerJar);
     }
 
+    /**
+     * Retrieve the CLI function call to the compiler binary
+     *
+     * @return string
+     */
     public function getBinary()
     {
         return 'java -jar ' . $this->compilerJar;
     }
 
+    /**
+     * Returns the config array
+     *
+     * @return array
+     */
     public function getConfig()
     {
         return $this->config;
     }
 
+    /**
+     * Set the path to serve as basedir for the source javascript files
+     *
+     * @param string $path
+     *
+     * @return null
+     * @throws CompilerException
+     */
     public function setSourceBaseDir($path = '')
     {
         if (file_exists($path)) {
@@ -62,6 +94,14 @@ class ClosureCompiler
         }
     }
 
+    /**
+     * Set the path to serve as basedir for the compiled javascript file
+     *
+     * @param string $path
+     *
+     * @return null
+     * @throws CompilerException
+     */
     public function setTargetBaseDir($path = '')
     {
         if (file_exists($path)) {
@@ -73,11 +113,22 @@ class ClosureCompiler
         }
     }
 
+    /**
+     * Delete all entries from the list of source files
+     */
     public function clearSourceFiles()
     {
         $this->config['sourceFileNames'] = array();
     }
 
+    /**
+     * Add an entry to the list of source files
+     *
+     * @param string $file
+     * 
+     * @return null
+     * @throws CompilerException
+     */
     public function addSourceFile($file)
     {
         $path = $this->config['sourceBaseDir'] . $file;
@@ -91,6 +142,14 @@ class ClosureCompiler
         }
     }
 
+    /**
+     * Set the list of source files
+     *
+     * @param array $files
+     * @param boolean $reset
+     *
+     * @return null
+     */
     public function setSourceFiles(array $files, $reset = true)
     {
         if ($reset === true) {
@@ -101,6 +160,13 @@ class ClosureCompiler
         }
     }
 
+    /**
+     * Remove a specific file from the list of source files
+     *
+     * @param string $file
+     *
+     * @return null
+     */
     public function removeSourceFile($file)
     {
         $path = $this->config['sourceBaseDir'] . $file;
@@ -110,6 +176,13 @@ class ClosureCompiler
         }
     }
 
+    /**
+     * Set the name of the resulting compiled javascript file
+     *
+     * @param string $file
+     * 
+     * @throws CompilerException
+     */
     public function setTargetFile($file)
     {
         $path = $this->config['targetBaseDir'] . $file;
@@ -120,6 +193,12 @@ class ClosureCompiler
         }
     }
 
+    /**
+     * Performs the compilation by calling the compiler.jar
+     *
+     * @return int
+     * @throws CompilerException
+     */
     public function compile()
     {
         # check for possible overwrite of source files
@@ -144,6 +223,5 @@ class ClosureCompiler
         exec($command, $output, $return);
         return $return;
     }
-
 }
 

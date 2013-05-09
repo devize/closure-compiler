@@ -2,6 +2,7 @@
 
 namespace Devize\ClosureCompiler;
 
-class CompilerException extends \Exception {
-    
+class CompilerException extends \Exception
+{
 }
+
