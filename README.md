@@ -30,9 +30,11 @@ Assuming you have managed your own autoloader, set your own includes or are usin
 	$compiler->addSourceFile('four');
 	$compiler->compile();
 
+The `compile()` method uses a system call to execute the Jar-file. By default, the resulting file is called `compiled.js`. You can change this by calling this before you compile:
 
+    $compiler->setTargetFile('somethingElse.js');
 
-The `compile()` method uses a system call to execute the Jar-file.
+When you make a mistake, an exception of the class `Devize\ClosureCompiler\CompilerException` will be thrown.
 
 ## License
 This library packages the Closure Compiler from Google. The folder `compiler-latest` is the result of unpacking the Google-supplied [Zip file](http://closure-compiler.googlecode.com/files/compiler-latest.zip). Its license is included.
