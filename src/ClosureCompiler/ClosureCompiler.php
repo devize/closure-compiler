@@ -186,11 +186,7 @@ class ClosureCompiler
     public function setTargetFile($file)
     {
         $path = $this->config['targetBaseDir'] . $file;
-        if (file_exists($path)) {
-            $this->config['targetFileName'] = $path;
-        } else {
-            throw new CompilerException("The path '{$path}' does not seem to exist.");
-        }
+        $this->config['targetFileName'] = $path;
     }
 
     /**

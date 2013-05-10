@@ -208,13 +208,12 @@ class closureCompilerTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers Devize\ClosureCompiler\ClosureCompiler::setTargetFile
-     * @expectedException Devize\ClosureCompiler\CompilerException
-     * @expectedExceptionMessage The path 'test.js' does not seem to exist.
      */
     public function testSetTargetFile1()
     {
         $this->object->setTargetFile('test.js');
-
+        $result = $this->object->getConfig();
+        $this->assertEquals($result['targetBaseDir'] . 'test.js', $result['targetFileName']);
     }
 
     /**
