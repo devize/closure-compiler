@@ -37,7 +37,7 @@ namespace Devize\ClosureCompiler;
  */
 class ClosureCompiler
 {
-
+    protected $java;
     protected $compilerJar = 'compiler-latest/compiler.jar';
 
     protected $config = array(
@@ -62,7 +62,14 @@ class ClosureCompiler
      */
     public function getBinary()
     {
-        return 'java -jar ' . $this->compilerJar;
+        if (!$this->java) {
+            $this->java = rtrim(shell_exec('which java'));
+            if (!$this->java) {
+                throw new \RuntimeException('java could not be found in PATH.');
+            }
+        }
+
+        return "{$this->java} -jar {$this->compilerJar}";
     }
 
     /**
@@ -125,7 +132,7 @@ class ClosureCompiler
      * Add an entry to the list of source files
      *
      * @param string $file
-     * 
+     *
      * @return null
      * @throws CompilerException
      */
@@ -180,7 +187,7 @@ class ClosureCompiler
      * Set the name of the resulting compiled javascript file
      *
      * @param string $file
-     * 
+     *
      * @throws CompilerException
      */
     public function setTargetFile($file)
