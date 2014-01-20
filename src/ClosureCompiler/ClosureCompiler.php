@@ -62,8 +62,16 @@ class ClosureCompiler
      */
     public function getBinary()
     {
+        if (PHP_OS == 'Darwin') {
+            $command = 'whereis';
+        } elseif (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+            $command = 'where';
+        } else {
+            $command = 'which';
+        }
+
         if (!$this->java) {
-            $this->java = rtrim(shell_exec('which java'));
+            $this->java = rtrim(shell_exec($command . ' java'));
             if (!$this->java) {
                 throw new \RuntimeException('java could not be found in PATH.');
             }
