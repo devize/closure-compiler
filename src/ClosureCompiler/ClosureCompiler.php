@@ -40,6 +40,11 @@ class ClosureCompiler
     protected $java;
     protected $compilerJar = 'compiler-latest/compiler.jar';
 
+    /**
+     * @var string Output from last compile
+     */
+    protected $output = '';
+
     protected $config = array(
         'sourceBaseDir' => '',
         'targetBaseDir' => '',
@@ -224,7 +229,18 @@ class ClosureCompiler
         $return = '';
         $output = array();
         exec($command, $output, $return);
+        $this->output = implode("\n", $output);
         return $return;
+    }
+
+    /**
+     * Gets output of last compile
+     *
+     * @return string
+     */
+    public function getOutput()
+    {
+        return $this->output;
     }
 }
 
