@@ -28,7 +28,10 @@ Assuming you have managed your own autoloader, set your own includes or are usin
 	$compiler->setTargetBaseDir('path/to/javascript-files/');
 	$compiler->setSourceFiles(array('one.js', 'two.js', 'three.js'));
 	$compiler->addSourceFile('four');
-	$compiler->compile();
+	$result = $compiler->compile();
+	if ($result !== 0) {
+		echo $compiler->getOutput();
+	}
 
 The `compile()` method uses a system call to execute the Jar-file. By default, the resulting file is called `compiled.js`. You can change this by calling this before you compile:
 

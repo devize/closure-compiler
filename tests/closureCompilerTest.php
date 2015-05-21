@@ -248,6 +248,7 @@ class closureCompilerTest extends PHPUnit_Framework_TestCase
         $this->object->setTargetFile('test.js');
         $result = $this->object->compile();
         $this->assertEquals(1, $result);
+        $this->assertStringStartsWith('ERROR - Cannot read: vfs:/tmp/test.js', $this->object->getOutput());
     }
 
     /**
@@ -263,6 +264,7 @@ class closureCompilerTest extends PHPUnit_Framework_TestCase
         $this->object->setSourceFiles(array('test.js'));
         $result = $this->object->compile();
         $this->assertEquals(1, $result);
+        $this->assertStringStartsWith('ERROR - Cannot read: vfs:/tmp/test.js', $this->object->getOutput());
     }
 
     /**
@@ -279,6 +281,7 @@ class closureCompilerTest extends PHPUnit_Framework_TestCase
         $this->object->setSourceFiles(array('test.js'));
         $this->object->setTargetBaseDir($dir);
         $result = $this->object->compile();
+        $this->assertStringStartsWith('java.io.FileNotFoundException: vfs:/tmp/compiled.js (No such file or directory)', $this->object->getOutput());
         $result = $this->object->getConfig();
         $this->assertEquals('vfs://tmp/compiled.js', $result['targetFileName']);
     }
